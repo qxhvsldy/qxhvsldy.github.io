@@ -44,7 +44,7 @@ a{color:inherit}
 .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
 .rv.pop{transform:scale(.9)}
-.rv.pop.in{transform:scale(1) rotate(var(--rot,0deg))}
+.rv.pop.in{transform:scale(1)}
 
 /* ============ 导航 ============ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;transition:background .35s,box-shadow .35s,border-color .35s;border-bottom:1.5px solid transparent}
@@ -103,7 +103,7 @@ a{color:inherit}
 .prof-copy h2 .uline{position:relative;white-space:nowrap}
 .prof-copy h2 .uline::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:9px;background:var(--yellow);border-radius:9px;transform:scaleX(0);transform-origin:left;transition:transform 1s ease .9s}
 .drawn h2 .uline::after{transform:scaleX(1)}
-.prof-copy .lead{margin-top:26px;font-size:15.5px;line-height:2.02;color:#3B382F}
+.prof-copy .lead{margin-top:26px;font-size:15.5px;line-height:2.02;color:#3B382F;text-align:justify}
 .prof-copy .lead b{color:var(--ink)}
 .prof-copy .lead .g{color:var(--green-deep);font-weight:700}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
@@ -137,14 +137,15 @@ a{color:inherit}
 
 /* ============ 通用板块 ============ */
 .sec{max-width:1220px;margin:0 auto;padding:84px 22px 10px}
-.sec-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;position:relative}
+.sec-head{display:flex;align-items:flex-start;gap:22px;flex-wrap:wrap;position:relative}
 .sec-head .p-num{font-family:var(--f-disp);font-weight:800;font-size:clamp(46px,6vw,84px);line-height:.8;color:transparent;-webkit-text-stroke:2px var(--ink);opacity:.9}
 .sec-head h2{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-1px;line-height:1.05}
 .sec-head h2 i{display:block;font-style:normal;font-family:var(--f-hand);font-size:15px;letter-spacing:2.5px;color:var(--green);margin-top:8px;font-weight:400}
-.sec-head .p-meta{margin-left:auto;max-width:330px;font-size:13.5px;color:var(--muted);line-height:1.8;padding-bottom:8px}
+.sec-head .p-meta{margin-left:auto;max-width:352px;font-size:13.5px;color:#57534A;line-height:1.8;padding-top:2px}
+.sec-head .p-meta .ln12{display:block;text-align:justify;text-align-last:justify}
 .sec-head .tape{position:absolute;top:-20px;left:calc(50% - 300px);width:120px;height:30px;background:rgba(23,163,74,.28);transform:rotate(-4deg);border-left:2px dashed rgba(25,26,28,.2);border-right:2px dashed rgba(25,26,28,.2)}
 @media(max-width:900px){.sec-head .p-meta{margin-left:0;max-width:none}}
-.p-story{margin:22px 0 30px;font-size:15.5px;line-height:2;color:#3B382F;max-width:860px}
+.p-story{margin:22px 0 30px;font-size:15.5px;line-height:2;color:#3B382F;max-width:860px;text-align:justify}
 .p-story b{color:var(--green-deep)}
 
 /* 分类小标 */
@@ -160,17 +161,24 @@ a{color:inherit}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
 @media(max-width:960px){.cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.cards{grid-template-columns:1fr}}
-.card{background:var(--paper);border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;cursor:pointer;box-shadow:var(--shadow);transition:transform .28s cubic-bezier(.2,.9,.3,1.2),box-shadow .28s;position:relative}
+.card{background:var(--paper);border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;cursor:pointer;box-shadow:var(--shadow);transition:transform .28s cubic-bezier(.2,.9,.3,1.2),box-shadow .28s;position:relative;display:flex;flex-direction:column}
 .card:hover{transform:translateY(-7px) rotate(-.4deg)}
 .card:nth-child(3n+2):hover{transform:translateY(-7px) rotate(.5deg)}
+.card.rv.pop:hover{transform:translateY(-7px) rotate(var(--rot,0deg))}
+/* READ STORY 条：平时贴底常显，hover 卡片才上浮 + 变深绿 */
+.card .more{position:relative}
+.card:hover .more{background:var(--green);color:#fff}
 .card .thumb{position:relative;aspect-ratio:16/10.6;overflow:hidden;background:#e8e4d8;border-bottom:2px solid var(--ink)}
 .card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+/* 英德卡：左右两半改为上下堆叠，各占全宽，文字与左侧卡齐平 */
+.card .thumb.thumbs2v{display:grid;grid-template-rows:1fr 1fr;gap:2px;background:#e8e4d8;aspect-ratio:16/22}
+.card .thumb.thumbs2v img{height:100%;min-height:0;width:100%;object-fit:cover}
 .card:hover .thumb img{transform:scale(1.06)}
 .card .thumb .badge{position:absolute;top:11px;left:11px;background:var(--yellow);border:1.5px solid var(--ink);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:800;transform:rotate(-3deg);box-shadow:2px 2px 0 rgba(25,26,28,.85)}
 .card .thumb .badge.mag{background:var(--red);color:#fff}
 .card .thumb .badge.grn{background:var(--green);color:#fff}
 .card .thumb .badge.cy{background:var(--cyan);color:var(--ink)}
-.card .body{padding:17px 18px 15px}
+.card .body{padding:17px 18px 15px;flex:1}
 .card .body h4{font-size:16.5px;line-height:1.4;font-weight:800}
 .card .body h4 .yr{font-size:12px;color:var(--muted);font-weight:400;font-family:var(--f-disp);margin-left:6px}
 .card .body p{margin-top:8px;font-size:13.2px;line-height:1.75;color:#54503F}
@@ -228,16 +236,17 @@ a{color:inherit}
 /* ============ 页脚联系 ============ */
 .contact{max-width:1220px;margin:0 auto;padding:70px 22px 46px}
 .contact .c-grid{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
-@media(max-width:760px){.contact .c-grid{grid-template-columns:1fr}}
-.contact h2{font-size:clamp(30px,4.6vw,54px);font-weight:800;letter-spacing:-1px;line-height:1.12}
+@media(max-width:760px){.contact .c-grid{grid-template-columns:1fr}.contact h2{white-space:normal;font-size:clamp(22px,6vw,30px)}.contact .say{white-space:normal}}
+.contact h2{font-size:clamp(22px,2.8vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.15;white-space:nowrap}
 .contact h2 em{font-style:normal;color:var(--green);font-family:var(--f-hand)}
-.contact .say{font-family:var(--f-cav);font-size:21px;color:var(--muted);margin-top:12px}
+.contact .say{font-family:'Microsoft YaHei','PingFang SC',sans-serif;font-size:15.5px;color:var(--muted);margin-top:12px;white-space:nowrap}
 .contact .chips{display:flex;gap:14px;flex-wrap:wrap}
-.contact .chip{background:var(--paper);border:2px solid var(--ink);border-radius:99px;padding:13px 22px;font-size:14px;font-weight:700;box-shadow:var(--shadow-s);display:flex;align-items:center;gap:9px}
+.contact .chip{background:var(--paper);border:2px solid var(--ink);border-radius:99px;padding:13px 22px;font-size:14px;font-weight:700;box-shadow:var(--shadow-s);display:flex;align-items:center;gap:9px;font-family:'Microsoft YaHei','PingFang SC',sans-serif}
 .contact .chip i{font-style:normal;width:24px;height:24px;border-radius:99px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:12px}
 footer{border-top:2.5px solid var(--ink);background:var(--ink);color:#8f8d84;margin-top:30px}
 footer .in{max-width:1220px;margin:0 auto;padding:26px 22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px}
 footer b{color:var(--cream);font-family:var(--f-disp)}
+footer .foot-note{color:#fff;font-family:'Microsoft YaHei','PingFang SC',sans-serif}
 
 /* ============ 故事弹窗（纸质） ============ */
 #story{position:fixed;inset:0;z-index:300;background:rgba(25,26,28,.55);backdrop-filter:blur(5px);display:none;align-items:flex-start;justify-content:center;padding:5vh 16px}
@@ -335,15 +344,17 @@ body.cur-meteor, body.cur-meteor a, body.cur-meteor button, body.cur-meteor .car
 .hi-kicker{color:#3ddc84}
 .prof-copy h2{color:#fff}
 .prof-copy h2 .circ{color:#7CFFD8}
-.prof-copy .lead{color:#c9d6cd}
+.prof-copy .lead{color:#fff}
 .prof-copy .lead b{color:#fff}
+.prof-copy .lead .g{color:#7CFFD8}
+.p-story b{color:#7CFFD8}
 .prof-copy .lead .g{color:#7CFFD8}
 .prof-photo .blob,.prof-photo .sticker,.prof-photo .sticker2{border-color:#fff}
 .sec-head h2{color:#fff}
 .sec-head h2 i{color:#3ddc84}
 .sec-head .p-num{-webkit-text-stroke-color:rgba(255,255,255,.9)}
-.sec-head .p-meta{color:#9db3a6}
-.p-story{color:#c9d6cd}
+.sec-head .p-meta{color:#fff}
+.p-story{color:#fff}
 .p-story b{color:#7CFFD8}
 .cat-head b{color:#fff}
 .cat-head i{color:#3ddc84}
@@ -358,10 +369,10 @@ body.cur-meteor, body.cur-meteor a, body.cur-meteor button, body.cur-meteor .car
 .trow{border-bottom-color:rgba(255,255,255,.22)}
 .trow .yr{color:#6EE7A8}
 .trow .wh{color:#F1F6F1}
-.trow .wh small{color:#9db3a6}
+.trow .wh small{color:#fff}
 .trow .dot::before{border-color:#fff}
 .contact h2{color:#fff}
-.contact .say{color:#9db3a6}
+.contact .say{color:#fff}
 footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
 #lightbox{background:rgba(2,10,16,.96)}
 #lightbox img{border-color:rgba(255,255,255,.85)}
@@ -417,7 +428,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="rv-copy" id="profCopy">
         <h2>我教<span class="circ">数字媒体艺术<svg viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M8,34 C40,10 70,52 100,30 S160,12 192,32" style="--len:340"/></svg></span>，<br>也陪学生把 <span class="uline">AI 用到飞起</span>。</h2>
       </div>
-      <p class="lead rv">谭雅茜（Yancy），深圳市携创高级技工学校 <b>数字媒体艺术专业教师 · 艺术设计工作室负责人 · 学生竞赛负责人</b>。风景园林硕士出身，五年景观与室内设计企业历练后转入讲台，如今把 <span class="g">AIGC 工具链、Python 编程、TouchDesigner 交互、无人机航拍</span> 全部搬进课堂。主持的 <b>AI 复原茂盛世居客家围屋</b> 项目被深圳卫视等 5 家媒体报道；带领 AIGC 社团创作微电影短片 30+ 部；指导学生拿下全国职业院校技能大赛一等奖、美国新星设计奖、缪斯设计奖等 40+ 个国内外奖项。</p>
+      <p class="lead rv">谭雅茜（Yancy），深圳市携创高级技工学校 <b>数字媒体艺术专业教师 · 艺术设计工作室负责人 · 学生竞赛负责人</b>。风景园林硕士出身，五年景观与室内设计企业历练后转入讲台，如今把 <span class="g">AIGC 工具链、Python 编程、TouchDesigner 交互、无人机航拍</span> 全部搬进课堂。主持的 <b>AI 复原茂盛世居客家围屋</b> 项目被深圳卫视等 5 家媒体报道；带领 AIGC 社团创作微电影短片 30+ 部；指导学生拿下全国职业院校技能大赛一等奖、大学生视觉艺术设计竞赛、缪斯设计奖等 40+ 个国内外奖项。</p>
       <div class="stats">
         <div class="stat rv"><span class="ico">✏</span><b><span data-count="4">0</span><i> 年</i></b><span>从教经历</span></div>
         <div class="stat rv"><span class="ico">🏆</span><b><span data-count="40">0</span><i>+</i></b><span>指导学生获奖</span></div>
@@ -444,11 +455,11 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
   <div class="sec-head">
     <div class="p-num rv">01</div>
     <div class="rv"><h2>从教时期<i>TEACHING · 2022 — NOW</i></h2></div>
-    <div class="p-meta rv">广东省华立技师学院 → 深圳市携创高级技工学校 · 艺术设计工作室负责人 / 学生竞赛负责人 —— 课堂、片场、领奖台，三个现场我都盯。</div>
+    <div class="p-meta rv"><span class="ln12">广东省华立技师学院 → 深圳市携创高级技工学校 · 艺术设计工作室负责人 / 学生竞赛负责人 —— 课堂、片场</span>、领奖台，三个现场我都盯。</div>
   </div>
 
   <!-- A. 课件与新闻 -->
-  <div class="cat-head rv"><i>COURSEWARE &amp; NEWS</i><b>从教课件 · 新闻报道</b><span></span></div>
+  <div class="cat-head rv"><b>从教课件 · 新闻报道</b><i>COURSEWARE &amp; NEWS</i><span></span></div>
   <div class="cards">
     <div class="card rv" data-story="maosheng">
       <div class="thumb"><span class="badge mag">5 家媒体报道</span><img src="assets_media/wx_maosheng/img00.jpg" alt="茂盛世居"></div>
@@ -487,12 +498,12 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
   </div>
 
   <!-- B. 竞赛成绩 -->
-  <div class="cat-head rv"><i>AWARDS WALL</i><b>竞赛成绩</b><span></span><span class="eyes"><i></i><i></i></span></div>
+  <div class="cat-head rv"><b>竞赛成绩</b><i>AWARDS WALL</i><span></span><span class="eyes"><i></i><i></i></span></div>
   <div class="cards">
     <div class="card rv" data-story="jingsai">
       <div class="thumb"><span class="badge mag">国赛一等奖</span><img src="assets/ppt/award_03.jpg" alt="全国技能大赛"></div>
       <div class="body"><h4>学生竞赛指导成果 <span class="yr">2023—2026</span></h4>
-      <p>全国职业院校技能大赛一等奖、美国新星设计奖、缪斯设计奖、EPACC、G-CROSS……竞赛工作室的奖杯墙</p>
+      <p>全国职业院校技能大赛一等奖、大学生视觉艺术设计竞赛、缪斯设计奖、EPACC、G-CROSS……竞赛工作室的奖杯墙</p>
       <div class="tags"><span>国赛一等奖</span><span>国际奖项</span><span>40+</span></div></div>
       <div class="more">READ STORY</div>
     </div>
@@ -512,10 +523,10 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
     </div>
   </div>
   <div class="cert-wall rv" id="certWall">
-    <div class="cert" style="--rot:-2deg"><div class="tape"></div><img src="assets/ppt/award_05.jpg" alt="美国新星设计奖证书"><span>美国新星设计奖</span></div>
+    <div class="cert" style="--rot:-2deg"><div class="tape"></div><img src="assets/ppt/award_05.jpg" alt="大学生视觉艺术设计竞赛证书"><span>大学生视觉艺术设计竞赛</span></div>
     <div class="cert" style="--rot:1.5deg"><div class="tape"></div><img src="assets/ppt/award_milan.jpg" alt="米兰国际艺术设计奖证书"><span>米兰国际艺术设计奖 · 获奖证书</span></div>
     <div class="cert" style="--rot:-1deg"><div class="tape"></div><img src="assets/ppt/award_07.jpg" alt="获奖海报"><span>获奖作品海报</span></div>
-    <div class="cert" style="--rot:2deg"><div class="tape"></div><img src="assets/ppt/award_08.jpg" alt="国际奖项证书"><span>国际赛事证书</span></div>
+    <div class="cert" style="--rot:2deg"><div class="tape"></div><img src="assets/ppt/award_08.jpg" alt="美国新星设计奖-金奖证书"><span>美国新星设计奖-金奖</span></div>
     <div class="cert" style="--rot:-2.4deg"><div class="tape"></div><img src="assets/ppt/award_09.jpg" alt="EPACC证书"><span>EPACC 国际环艺设计大赛</span></div>
     <div class="cert" style="--rot:1.2deg"><div class="tape"></div><img src="assets/ppt/award_01.jpg" alt="短视频大赛证书"><span>AI 创意短视频大赛 · 二等奖</span></div>
     <div class="cert" style="--rot:-1.6deg"><div class="tape"></div><img src="assets/ppt/award_10.jpg" alt="学院奖作品"><span>广东省学院奖 · 一等奖</span></div>
@@ -523,7 +534,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
   </div>
 
   <!-- C. AIGC 社团短片 -->
-  <div class="cat-head rv"><i>AIGC FILM CLUB</i><b>AIGC 社团短片</b><span></span></div>
+  <div class="cat-head rv"><b>AIGC 社团短片</b><i>AIGC FILM CLUB</i><span></span></div>
   <div class="filmzone rv">
     <div class="sprocket top"></div>
     <div class="fz-title"><span>✦ 我和学生一起拍的 AIGC 微电影 ✦</span></div>
@@ -537,7 +548,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
   </div>
 
   <!-- D. AIGC IP -->
-  <div class="cat-head rv"><i>AIGC IP LAB</i><b>AIGC IP 设计</b><span></span><span class="eyes"><i></i><i></i></span></div>
+  <div class="cat-head rv"><b>AIGC IP 设计</b><i>AIGC IP LAB</i><span></span><span class="eyes"><i></i><i></i></span></div>
   <div class="cards">
     <div class="card rv pop" style="--rot:-1.2deg" data-story="starcat">
       <div class="thumb"><span class="badge grn">3D 可旋转</span><img src="assets/ip/starcat_1.jpg" alt="星星猫IP"></div>
@@ -583,7 +594,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
     <div class="p-meta rv">北京汉通建筑规划设计（西安）→ 前海源点建筑设计 LOCUS ASSOCIATES · 景观设计师 × 室内设计团队</div>
   </div>
   <p class="p-story rv">五年职业设计生涯，从地产景观、文旅小镇到高端室内。在 LOCUS 的日子里，我尝试过把<b>赛博朋克</b>植入建筑景观（合肥空港小镇·未来实验室），在「新禅式温泉度假目的地」里提炼莲花语言，最骄傲的一战是越秀星汇湾——<b>四天，中标</b>。室内方向则以团队协作完成了新加坡、泰国与深圳的高端住宅项目。2021 年，团队作品获得法国巴黎 NDA 城市规划与景观类金奖。</p>
-  <div class="cat-head rv"><i>LANDSCAPE &amp; PLANNING</i><b>景观与规划</b><span></span></div>
+  <div class="cat-head rv"><b>景观与规划</b><i>LANDSCAPE &amp; PLANNING</i><span></span></div>
   <div class="cards">
     <div class="card rv wide" data-story="gangkou">
       <div class="thumb"><span class="badge">OCT 华侨城 · 未来实验室</span><img src="assets/pages/mg_p10.jpg" alt="空港小镇"></div>
@@ -593,7 +604,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="more">READ STORY</div>
     </div>
     <div class="card rv" data-story="yingde">
-      <div class="thumb"><span class="badge">新禅式</span><img src="assets/pages/mg_p12.jpg" alt="英德温泉"></div>
+      <div class="thumb thumbs2v"><span class="badge">新禅式</span><img src="assets/pages/mg_p12a.jpg" alt="英德温泉全景左段"><img src="assets/pages/mg_p12b.jpg" alt="英德温泉莲花细节"></div>
       <div class="body"><h4>英德观音山温泉度假村售楼部 <span class="yr">2020</span></h4>
       <p>「隐世禅意」——以莲花为主线，打造珠三角首个新禅式体验温泉度假目的地</p>
       <div class="tags"><span>地产景观</span><span>新中式禅意</span></div></div>
@@ -614,14 +625,14 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="more">READ STORY</div>
     </div>
     <div class="card rv" data-story="taohuayuan">
-      <div class="thumb"><span class="badge">酒店景观</span><img src="assets/pages/mg_p03.jpg" alt="桃花源酒店"></div>
+      <div class="thumb"><span class="badge">酒店景观</span><img src="assets/pages/mg_p04.jpg" alt="桃花源酒店实景"></div>
       <div class="body"><h4>上犹桃花源度假酒店景观内庭 <span class="yr">2017-18</span></h4>
       <p>「山水印炼」——把桃花源的美好山水印炼为一种语言，营造归隐自然的雅致空间</p>
       <div class="tags"><span>酒店景观</span><span>新中式</span></div></div>
       <div class="more">READ STORY</div>
     </div>
   </div>
-  <div class="cat-head rv"><i>INTERIOR</i><b>室内设计</b><span></span></div>
+  <div class="cat-head rv"><b>室内设计</b><i>INTERIOR</i><span></span></div>
   <div class="cards">
     <div class="card rv" data-story="holland">
       <div class="thumb"><span class="badge mag">团队成果</span><img src="assets/pages/in_p05.jpg" alt="新加坡荷兰公寓"></div>
@@ -711,10 +722,10 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="more">READ STORY</div>
     </div>
     <div class="card rv" data-story="shouhui">
-      <div class="thumb"><img src="assets/pages/ug_p14.jpg" alt="律动足迹手绘"></div>
+      <div class="thumb"><img src="assets/shouhui/sh_02.jpg" alt="律动足迹手绘"></div>
       <div class="body"><h4>律动 · 足迹 &amp; 手绘小品 <span class="yr">2015</span></h4>
-      <p>北京延庆妫河创意产业园设计 + 景观快题与手绘小品——手上的功夫从来不曾放下</p>
-      <div class="tags"><span>产业园</span><span>手绘表现</span></div></div>
+      <p>景观快题与手绘小品——手上的功夫从来不曾放下</p>
+      <div class="tags"><span>手绘表现</span><span>景观快题</span></div></div>
       <div class="more">READ STORY</div>
     </div>
   </div>
@@ -724,7 +735,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
 <section class="contact" id="contact">
   <div class="c-grid">
     <div class="rv">
-      <h2>让课堂里的 AI<br>被更多人看见 <em>→</em></h2>
+      <h2>让课堂里的 AI 被更多人看见 <em>→</em></h2>
       <div class="say">课程合作 · 竞赛指导 · AIGC 教学分享 · 项目合作，都欢迎来聊：</div>
     </div>
     <div class="chips rv">
@@ -738,7 +749,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
 <footer>
   <div class="in">
     <span><b>YANCY TAN</b> © 2026 · 数字媒体艺术教师作品集</span>
-    <span>Designed &amp; built with ♥ and a lot of coffee · 绿色手绘风 v3</span>
+    <span class="foot-note">Designed &amp; built with ♥ and a lot of coffee · 绿色手绘风 v3</span>
   </div>
 </footer>
 
@@ -807,13 +818,12 @@ secs:[
 {h:'概念',p:'「流动·边缘」是一次把建筑「藏」进地景的实验：曲面草坡屋顶、圆形庭院天井、流动的边界——聚落像从大地里生长出来。方案以「自由聚落」为题，用绿色屋顶缝合建筑与景观，让空间在行走中被连续阅读。'},
 {h:'版面',imgs:['assets/pages/ug_ld01.jpg','assets/pages/ug_ld03.jpg','assets/pages/ug_ld04.jpg','assets/pages/ug_p13.jpg'],cap:'设计说明 / 效果图组 / 剖面与渲染 / 北京延庆妫河创意产业园鸟瞰展板'}],
 awards:['2015 CIID 8090 设计艺术展（西安站）· 银奖 · 自由聚落空间规划设计']};
-S.shouhui={t:'律动 · 足迹 & 手绘小品',sub:'北京延庆妫河创意产业园 + 景观快题手绘 · 2015',tags:['产业园','建筑设计','手绘表现'],hero:'assets/pages/ug_p14.jpg',
+S.shouhui={t:'律动 · 足迹 & 手绘小品',sub:'景观快题手绘 · 2015',tags:['手绘表现','景观快题'],hero:'assets/shouhui/sh_02.jpg',
 quote:'手绘是设计师随身携带的思考方式——它从来没离开过我的课堂。',
 secs:[
-{h:'产业园',p:'「律动·足迹——北京延庆妫河创意产业园」，用地约 4000㎡，主题「让人与环境和谐为本」。流线型曲面屋顶、屋顶天光与通风口、曲线栏杆与连廊庭院，在轴测图上被逐点标注——用有机的建筑语言连接学习与工作的过渡地带。'},
-{h:'手绘',p:'马克笔与水彩的景观手绘小品——亭子、花架、水景、滨水绿地、欧式街景，加上两张景观快题设计（总平面 + 鸟瞰 + 节点透视的完整快题版式）。本科四年的手上功夫，如今全部还给了学生的作业本上。',imgs:['assets/pages/ug_p14.jpg','assets/shouhui/sh_01.jpg','assets/shouhui/sh_02.jpg','assets/shouhui/sh_03.jpg','assets/shouhui/sh_04.jpg','assets/shouhui/sh_05.jpg','assets/shouhui/sh_06.jpg'],cap:'景观手绘小品 + 快题设计版面'}]};
-S.taohuayuan={t:'江西上犹桃花源度假酒店景观内庭',sub:'上犹桃花源度假酒店 · 酒店景观内庭 · 2017-18 · Small Scale',tags:['酒店景观','新中式','山水印炼'],hero:'assets/pages/mg_p03.jpg',
-quote:'把桃花源的美好山水印炼为一种语言，在诗意之上获得空间与人之间的对话。',
+{h:'产业园',p:'「律动·足迹——北京延庆妫河创意产业园」，用地约 4000㎡，主题「让人与环境和谐为本」。流线型曲面屋顶、屋顶天光与通风口、曲线栏杆与连廊庭院，在轴测图上被逐点标注——用有机的建筑语言连接学习与工作的过渡地带。',imgs:['assets/pages/ug_p14.jpg']},
+{h:'手绘',p:'马克笔与水彩的景观手绘小品——亭子、花架、水景、滨水绿地、欧式街景，加上两张景观快题设计（总平面 + 鸟瞰 + 节点透视的完整快题版式）。本科四年的手上功夫，如今全部还给了学生的作业本上。',imgs:['assets/shouhui/sh_01.jpg','assets/shouhui/sh_02.jpg','assets/shouhui/sh_03.jpg','assets/shouhui/sh_04.jpg','assets/shouhui/sh_05.jpg','assets/shouhui/sh_06.jpg'],cap:'景观手绘小品 + 快题设计版面'}]};
+S.taohuayuan={t:'江西上犹桃花源度假酒店景观内庭',sub:'上犹桃花源度假酒店 · 酒店景观内庭 · 2017-18 · Small Scale',tags:['酒店景观','新中式','山水印炼'],hero:'assets/pages/mg_p03.jpg',quote:'把桃花源的美好山水印炼为一种语言，在诗意之上获得空间与人之间的对话。',
 secs:[
 {h:'立意',p:'项目位于江西上犹县，为酒店内庭景观。设计立意「山水印炼」：用现代手法提炼具有山水功能的构景元素，利用材质肌理变化打造简雅的空间氛围，在有限的景观意象中延伸出无限的精神内涵。'},
 {h:'图面',p:'中式园林庭院、水景、木质廊亭与山水背景的连续实景照片组，是这套方案最打动评审的部分——它证明了「诗意」是可以被设计与落地的。',imgs:['assets/pages/mg_p04.jpg'],cap:'桃花源酒店内庭实景意向'},
@@ -836,7 +846,8 @@ secs:[
 facts:[['规模','Big Scale · 城市设计'],['业主','OCT 华侨城'],['关键词','未来核 · 双环道 · 飞行艺术街区']]};
 S.yingde={t:'英德观音山温泉度假村售楼部',sub:'地产景观 · 新禅式温泉度假目的地',tags:['地产景观','新中式禅意'],hero:'assets/pages/mg_p12.jpg',
 quote:'以莲花为本真，从宏观到微观层级形成统一的设计语言。',
-secs:[{h:'立意',p:'项目位于广东英德。「隐世禅意」——以莲花为主题，通过莲的本真与禅的象征意义，在建筑设计、空间设计、小品设计、室内设计、公共艺术等方面形成统一语言，打造珠三角洲首个「新禅式体验温泉度假目的地」。'}]};
+secs:[{h:'立意',p:'项目位于广东英德。「隐世禅意」——以莲花为主题，通过莲的本真与禅的象征意义，在建筑设计、空间设计、小品设计、室内设计、公共艺术等方面形成统一语言，打造珠三角洲首个「新禅式体验温泉度假目的地」。'},
+{h:'图景',p:'全景鸟瞰与莲花主题细节——从总图布局到建筑近景，禅意语言一以贯之。',imgs:['assets/pages/mg_p12.jpg','assets/pages/mg_p12b.jpg'],cap:'新禅式全景 / 莲花主题细节'}]};
 S.wanxiang={t:'汕尾华润万象天地 C 地块',sub:'地产景观设计 · 新中式',tags:['地产景观','居住空间'],hero:'assets/pages/mg_p13.jpg',
 quote:'时间脉动，空间交融——软化方正冰冷的都市居住空间。',
 secs:[{h:'立意',p:'项目位于广东汕尾。将现代设计概念「时间脉动，空间交融」植入新中式景观，软化都市居住空间功能彼此独立、方正冰冷的感觉并加入空间之间的流动性，创造「东方韵味」的丰富积极空间。'}]};
@@ -1376,9 +1387,9 @@ function initLab(){
     // 平滑跟随（带惯性）
     hx+=(mx-hx)*.42; hy+=(my-hy)*.42;
 
-    // 记录尾迹（较短，保持流星小）
+    // 记录尾迹（短尾：约原来的 1/3，减少视觉等待）
     trail.push({x:hx,y:hy,t:now});
-    while(trail.length>14) trail.shift();
+    while(trail.length>5) trail.shift();
 
     var n=trail.length;
 

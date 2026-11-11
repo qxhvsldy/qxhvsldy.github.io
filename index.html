@@ -1517,9 +1517,8 @@ function initLab(){
   window.addEventListener('touchstart',onFirst);
   window.addEventListener('keydown',onFirst);
 
-  /* 首屏资源加载完再尝试音乐，避免抢占图片带宽 */
-  if(document.readyState==='complete'){ setTimeout(tryAuto,3000); }
-  else{ window.addEventListener('load',function(){ setTimeout(tryAuto,3000); }); }
+  /* 打开即尝试自动播放（浏览器策略允许时），首交互兜底恢复 */
+  tryAuto();
 })();
 </script>
 </body>

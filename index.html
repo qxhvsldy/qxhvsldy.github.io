@@ -2,6 +2,23 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<script>
+/* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
+(function(){
+  var V='37';
+  var q=location.search||'';
+  if(q.indexOf('sv='+V)<0){
+    location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);
+  }
+})();
+/* 清除任何历史遗留的 Service Worker / 缓存（一次性消毒） */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});
+}
+if(window.caches&&caches.keys){
+  caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k);});});
+}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>YANCY TAN · 数字媒体艺术教师作品集</title>
 <style>

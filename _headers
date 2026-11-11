@@ -1,0 +1,11 @@
+# HTML 永远拿最新（首次访问即更新版）
+/
+/index.html
+/works/*
+  Cache-Control: no-cache, must-revalidate
+
+# 带 ?v= 的资源已在 URL 层面带指纹，可放心长缓存
+/assets/*
+/assets_media/*
+/works/assets/*
+  Cache-Control: public, max-age=604800

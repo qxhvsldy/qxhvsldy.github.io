@@ -5,7 +5,7 @@
 <script>
 /* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
 (function(){
-  var V='38';
+  var V='39';
   var q=location.search||'';
   if(q.indexOf('sv='+V)<0){
     location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);
@@ -554,7 +554,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
   <div class="cat-head rv"><b>AIGC 社团短片</b><i>AIGC FILM CLUB</i><span></span></div>
   <div class="filmzone rv">
     <div class="sprocket top"></div>
-    <div class="fz-title"><span>✦ 我和学生一起拍的 AIGC 微电影 ✦</span></div>
+    <div class="fz-title"><span>✦ 我的 AIGC 微电影 + 社团作品 ✦</span></div>
     <div class="strip-wrap" id="stripWrap">
       <div class="strip" id="strip"></div>
       <button class="fnav prev" id="fprev" onclick="filmMove(-1)">‹</button>
@@ -582,7 +582,7 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="more">READ STORY</div>
     </div>
     <div class="card rv" data-story="avatar_ip">
-      <div class="thumb"><span class="badge mag">教师分身</span><img src="assets/ip/avatar_ip2.jpg" alt="教师数字人" loading="lazy"></div>
+      <div class="thumb"><span class="badge mag">教师分身</span><img src="assets/ip/avatar_v2_1.jpg" alt="教师数字人" loading="lazy"></div>
       <div class="body"><h4>本人教师数字人 IP <span class="yr">2025</span></h4>
       <p>把「谭老师」做成数字人——微课口播、AI 助教、招生宣传多场景复用的专属形象</p>
       <div class="tags"><span>数字人</span><span>AI 助教</span></div></div>
@@ -1142,9 +1142,9 @@ secs:[
 {h:'全链路',p:'从铅笔手稿、三版角色迭代到带材质的 3D 模型，一条完整的 IP 孵化链路。页面里还可以一键打开 3D 实验室，亲手转一转这只小猫。',imgs:['assets/ip/starcat_2.jpg','assets/ip/starcat_3.jpg','assets/ip/starcat_draft.jpg','assets/ip/starcat_poster.jpg'],cap:'角色迭代 / 手稿 / 宣传页'},
 {h:'3D',p:'点击下面的按钮，进入 3D 实验室把星星猫转起来。'}],
 lab:true};
-S.avatar_ip={t:'本人教师数字人 IP',sub:'数字人微课 · AI 助教 · 2025',tags:['数字人','AI 助教','教师分身'],hero:'assets/ip/avatar_ip2.jpg',
+S.avatar_ip={t:'本人教师数字人 IP',sub:'数字人微课 · AI 助教 · 2025',tags:['数字人','AI 助教','教师分身'],hero:'assets/ip/avatar_v2_1.jpg',
 quote:'当「谭老师」有了数字分身，答疑就不再有下班时间。',
-secs:[{h:'应用',p:'把教师形象做成数字人 IP：微课口播、招生宣传、AI 助教问答多场景复用。学生可以在课后随时向「数字谭老师」提问——这是我把 AIGC 用在自己身上的第一个实验。',imgs:['assets/ip/avatar_ip.png','assets/ip/avatar_ip3.jpg','assets/ip/avatar_ip4.jpg'],cap:'数字人形象 · 多场景复用'}]};
+secs:[{h:'应用',p:'把教师形象做成数字人 IP：微课口播、招生宣传、AI 助教问答多场景复用。学生可以在课后随时向「数字谭老师」提问——这是我把 AIGC 用在自己身上的第一个实验。',imgs:['assets/ip/avatar_ip.png','assets/ip/avatar_ip3.jpg','assets/ip/avatar_ip4.jpg'],cap:'数字人形象 · 多场景复用'},{h:'立绘组',p:'正式版数字教师立绘——紫色穿搭、高清全身像，一套形象多种气质。',imgs:['assets/ip/avatar_v2_1.jpg','assets/ip/avatar_v2_3.jpg','assets/ip/avatar_v2_4.jpg','assets/ip/avatar_v2_purple.jpg'],cap:'正式立绘 · 紫色穿搭'},{h:'Q版与表情',p:'同一形象的多元衍生：Q 版立绘、九宫格拼图与表情九宫格——从正式到活泼的全表情覆盖。',imgs:['assets/ip/avatar_v2_q.jpg','assets/ip/avatar_v2_qgrid.jpg','assets/ip/avatar_v2_emo.jpg'],cap:'Q 版家族 · 表情九宫格'},{h:'赛博朋克变体',p:'赛博朋克风格的数字教师——技术感的另一面。',imgs:['assets/ip/avatar_v2_cyber2.jpg'],cap:'赛博朋克版'}]};
 S.ip_rest={t:'空间 IP 设计集',sub:'赛博醒狮 · 英歌小武者 · 小鲸 · 围屋守护神 · 2024—2025',tags:['商业定制','吉祥物','空间IP'],hero:'assets/ip/ip_lion.jpg',
 quote:'好的空间 IP，是让一家店在被记住之前，先被喜欢。',
 secs:[
@@ -1153,17 +1153,13 @@ S.jingsai.hero='assets/ppt/award_03.jpg';
 
 /* ---------- AIGC 社团短片数据 ---------- */
 var FILMS=[
+{f:'me_dunhuang',t:'穿越敦煌 · 古风数字人',by:'本人独立制作 · 数字人微电影',d:'0:56'},
+{f:'me_avatar',t:'我的数字人分身',by:'本人独立制作 · 数字人形象片',d:'0:15'},
+{f:'me_ad',t:'商业 AIGC 广告',by:'本人制作 · 品牌广告片',d:'0:15'},
+{f:'me_gamechar',t:'游戏角色 AIGC',by:'本人独立制作 · 角色短片',d:'0:15'},
+{f:'me_qavatar',t:'Q 版数字人',by:'本人独立制作 · Q 版形象',d:'0:15'},
+{f:'me_qgame',t:'Q 版数字人 · 游戏页面',by:'本人独立制作 · 交互演示',d:'0:15'},
 {f:'f01_guandu',t:'官渡之战',by:'AIGC 古风战争短片 · 学生作品',d:'1:25'},
-{f:'f02_hei',t:'ChatGPT 小黑',by:'AI 虚拟角色短片 · 社团作品',d:'0:23'},
-{f:'f03_zhujian',t:'AI 预制菜',by:'竖屏创意广告 · 朱俊健',d:'0:31'},
-{f:'f04_wangtingting',t:'AI 人物 IP',by:'AI 角色短片 · 王婷婷',d:'0:55'},
-{f:'f05_wangjiamei',t:'铁火流星',by:'王嘉美',d:'1:39'},
-{f:'f06_linjunshuo',t:'林俊烁 作品',by:'AIGC 微电影 · 社团',d:'2:08'},
-{f:'f07_huangkaiyuan',t:'黄凯源 作品',by:'AIGC 微电影 · 社团',d:'1:27'},
-{f:'f08_zhangjialan',t:'张嘉岚 作品',by:'AIGC 微电影 · 社团',d:'2:08'},
-{f:'f09_zouxinyi',t:'邹馨怡 作品',by:'AIGC 微电影 · 社团',d:'1:53'},
-{f:'f10_group1',t:'第一组 作品',by:'小组共创 · 社团',d:'0:38'},
-{f:'f11_group4',t:'第四组 作品',by:'小组共创 · 社团',d:'0:57'},
 {f:'f12_courseware',t:'本人制作课件视频',by:'教师 demo',d:'1:23'}
 ];
 

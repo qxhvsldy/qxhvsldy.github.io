@@ -5,7 +5,7 @@
 <script>
 /* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
 (function(){
-  var V='43';
+  var V='44';
   var q=location.search||'';
   if(q.indexOf('sv='+V)<0){
     location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);
@@ -905,7 +905,7 @@ secs:[
 {h:'技术',p:'课件采用自研等距柱状全景查看器（WebGL shader）：外景与洞窟内景均为可拖动环顾、滚轮缩放的真全景。第 285 特窟接入了数字敦煌官方真实影像——主室、南壁、北壁、佛龛四个场景 14 个热点，AI 生成的壁画活化视频让五百强盗、皈依僧侣在墙上重新动起来，画中人还会与学生第一人称对话问答。'},
 {h:'教学设计',p:'导入戏剧（为什么是敦煌）→ VR 巡览（空间认知）→ 历史背景（知识）→ 285 窟（深度案例）→ 千年脉络（时间线）→ 壁画活化「四墙八灵」对话游戏（随堂检测）→ 小结探究。一节课的完整闭环。'}],
 facts:[['形式','单文件 HTML · 本地即开'],['章节','7 章 · 高中通识'],['核心','自研全景查看器 + 数字敦煌影像 + AI 壁画活化'],['体量','28 MB 单文件']]};
-S.flora={t:'FLORA · 指尖花开',sub:'手势交互开花网页 · 2026',tags:['手势识别','MediaPipe','网页交互'],hero:'assets/work_flora.jpg',
+S.flora={t:'FLORA · 指尖花开',sub:'手势交互开花网页 · 2026',tags:['手势识别','MediaPipe','网页交互'],hero:'assets/work_flora_full.jpg',
 quote:'让手势唤醒一朵花——拇指与食指之间，就是花开的呼吸。',
 secs:[
 {h:'玩法',p:'电脑摄像头实时识别拇指与食指的距离：两指分开，花慢慢盛放；捏紧，花合回花苞；半开半合，随手停留。动作稳定带一点缓冲，又跟得上手。',imgs:['works/flora/videos/thumb_02-bloom.jpg','works/flora/videos/thumb_05-bloom.jpg'],cap:'指距控制花开合'},

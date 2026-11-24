@@ -5,7 +5,7 @@
 <script>
 /* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
 (function(){
-  var V='45';
+  var V='46';
   var q=location.search||'';
   if(q.indexOf('sv='+V)<0){
     location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);
@@ -277,7 +277,7 @@ footer .foot-note{color:#fff;font-family:'Microsoft YaHei','PingFang SC',sans-se
 #stBody .st-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 #stBody .st-tags span{font-size:12px;border:1.5px solid var(--ink);border-radius:99px;padding:3px 11px;background:var(--cream)}
 #stBody .st-hero{margin-top:24px;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-s);position:relative}
-#stBody .st-hero img{width:100%}
+#stBody .st-hero img{width:100%;max-height:640px;object-fit:contain;background:#0e1512}
 #stBody .quote{margin-top:26px;font-family:var(--f-cav);font-size:clamp(20px,2.6vw,27px);color:var(--green-deep);line-height:1.55;position:relative;padding-left:18px;border-left:4px solid var(--yellow)}
 #stBody h2{margin-top:34px;font-size:19px;display:flex;align-items:center;gap:10px}
 #stBody h2::before{content:"";width:13px;height:13px;background:var(--green);border:2px solid var(--ink);border-radius:4px;transform:rotate(-6deg)}

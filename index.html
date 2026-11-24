@@ -5,7 +5,7 @@
 <script>
 /* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
 (function(){
-  var V='41';
+  var V='42';
   var q=location.search||'';
   if(q.indexOf('sv='+V)<0){
     location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);

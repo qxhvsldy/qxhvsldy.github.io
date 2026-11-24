@@ -5,7 +5,7 @@
 <script>
 /* 版本哨兵 v37：本行只存在于新版。若 URL 未带本版参数 → 跳转到带参数的新 URL，绕开一切旧缓存 */
 (function(){
-  var V='40';
+  var V='41';
   var q=location.search||'';
   if(q.indexOf('sv='+V)<0){
     location.replace(location.pathname+(q?q+'&':'?')+'sv='+V);
@@ -512,6 +512,13 @@ footer{background:#02090f;border-top-color:rgba(255,255,255,.3)}
       <div class="tags"><span>交互艺术</span><span>实时渲染</span></div></div>
       <div class="more">READ STORY</div>
     </div>
+    <div class="card rv" data-story="flora">
+      <div class="thumb"><span class="badge grn">手势交互</span><img src="assets/work_flora.jpg" alt="FLORA指尖花开" loading="lazy"></div>
+      <div class="body"><h4>FLORA · 指尖花开 <span class="yr">2026</span></h4>
+      <p>摄像头识别拇指-食指距离，控制八种花的开合——手势驱动的沉浸式交互网页</p>
+      <div class="tags"><span>手势识别</span><span>MediaPipe</span><span>网页交互</span></div></div>
+      <div class="more">READ STORY · ENTER</div>
+    </div>
   </div>
 
   <!-- B. 竞赛成绩 -->
@@ -898,6 +905,13 @@ secs:[
 {h:'技术',p:'课件采用自研等距柱状全景查看器（WebGL shader）：外景与洞窟内景均为可拖动环顾、滚轮缩放的真全景。第 285 特窟接入了数字敦煌官方真实影像——主室、南壁、北壁、佛龛四个场景 14 个热点，AI 生成的壁画活化视频让五百强盗、皈依僧侣在墙上重新动起来，画中人还会与学生第一人称对话问答。'},
 {h:'教学设计',p:'导入戏剧（为什么是敦煌）→ VR 巡览（空间认知）→ 历史背景（知识）→ 285 窟（深度案例）→ 千年脉络（时间线）→ 壁画活化「四墙八灵」对话游戏（随堂检测）→ 小结探究。一节课的完整闭环。'}],
 facts:[['形式','单文件 HTML · 本地即开'],['章节','7 章 · 高中通识'],['核心','自研全景查看器 + 数字敦煌影像 + AI 壁画活化'],['体量','28 MB 单文件']]};
+S.flora={t:'FLORA · 指尖花开',sub:'手势交互开花网页 · 2026',tags:['手势识别','MediaPipe','网页交互'],hero:'assets/work_flora.jpg',
+quote:'让手势唤醒一朵花——拇指与食指之间，就是花开的呼吸。',
+secs:[
+{h:'玩法',p:'电脑摄像头实时识别拇指与食指的距离：两指分开，花慢慢盛放；捏紧，花合回花苞；半开半合，随手停留。动作稳定带一点缓冲，又跟得上手。',imgs:['works/flora/videos/thumb_02-bloom.jpg','works/flora/videos/thumb_05-bloom.jpg'],cap:'指距控制花开合'},
+{h:'八花',p:'白樱、牡丹、山茶、黄葵、百合、芍药、罂粟、木兰——八种花逐帧解构开花过程，杂志式排版配花语与拉丁学名。',imgs:['works/flora/videos/thumb_01-white-bloom.jpg','works/flora/videos/thumb_03-bloom.jpg','works/flora/videos/thumb_06-bloom.jpg','works/flora/videos/thumb_08-white-bloom.jpg'],cap:'八花研究 STUDIES'},
+{h:'技术',p:'MediaPipe Hands 本地识别（不上传画面）+ 逐帧插值缓冲；手机自适应轻量模型；摄像头/滑条/键盘三重控制兜底。'}],
+launch:{t1:'▶ 打开完整交互课件',t2:'FLORA · 手势控制花开 · 建议新窗口体验（需允许摄像头）',url:'works/flora/index.html'}};
 S.shikong={t:'时空裂缝 · 物理规律验证官',sub:'像素风游戏化物理课堂 · 4-9 年级 · 90 分钟 · 自研',tags:['游戏化学习','像素美术','AI 素养','物理'],hero:'assets/work_shikong.jpg',
 quote:'AI 生成的视频里有六指琴魔和融化的杯子——找到它们，你就学会了物理。',
 launch:{t1:'▶ 打开完整交互课件',t2:'破晓电影审查局 · 5 关卡 + Debug 实验室 · 建议新窗口体验',url:'works/shikong.html'},

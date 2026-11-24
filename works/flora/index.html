@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FLORA · 指尖花开</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f3ed;         /* 浅米纸底 */
+    --paper2:#efece3;
+    --ink:#22201c;           /* 近黑墨 */
+    --sub:#8d887c;
+    --faint:#b8b3a6;
+    --pink:#e79aab;          /* 牡丹粉 */
+    --pink-deep:#c9738c;
+    --line:#dcd7ca;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:"Noto Serif SC","Playfair Display","PingFang SC",serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ 顶栏（杂志刊头） ============ */
+  .masthead{
+    max-width:1500px;margin:0 auto;
+    padding:18px clamp(18px,3vw,44px) 14px;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand .flora{
+    font-family:"Playfair Display",serif;
+    font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:.14em;
+  }
+  .brand .tag{
+    margin-top:5px;font-size:10.5px;letter-spacing:.42em;color:var(--sub);
+    text-transform:uppercase;
+  }
+  .studies{display:flex;gap:clamp(14px,2.4vw,34px);align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+  .studies .st{
+    text-align:right;cursor:pointer;user-select:none;
+    transition:opacity .2s;
+  }
+  .studies .st .no{
+    font-size:10px;letter-spacing:.18em;color:var(--faint);display:block;margin-bottom:3px;
+    font-family:"Playfair Display",serif;
+  }
+  .studies .st .nm{
+    font-family:"Playfair Display",serif;font-size:12.5px;letter-spacing:.2em;
+    color:var(--ink);padding-bottom:4px;border-bottom:1.5px solid transparent;
+    transition:border-color .25s,color .25s;
+  }
+  .studies .st:hover .nm{border-color:var(--faint)}
+  .studies .st.on .no{color:var(--pink-deep)}
+  .studies .st.cur .nm{border-color:var(--pink-deep);color:var(--pink-deep);font-weight:700}
+
+  /* ============ 主区 ============ */
+  .spread{
+    max-width:1870px;margin:0 auto;
+    padding:clamp(10px,1.6vh,20px) clamp(14px,1.6vw,26px) 0;
+    display:block;
+  }
+
+  /* 左：花舞台 */
+  .stage-col{position:relative;display:flex;flex-direction:column}
+  .kicker{
+    font-size:11px;letter-spacing:.5em;color:var(--sub);text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .stage{
+    position:relative;border-radius:6px;overflow:hidden;
+  }
+  /* 花的全貌：方形视频完整显示不裁切，尺寸由视口高决定，水平居中，深色氛围底衬托 */
+  .stage{
+    position:relative;border-radius:8px;overflow:hidden;
+    display:grid;place-items:center;
+    min-height:min(88vh,1000px);
+    background:radial-gradient(120% 90% at 50% 42%, #ffffff 0%, #f8f6f0 58%, #f0ede5 100%);
+    box-shadow:0 44px 100px -32px rgba(34,32,28,.5),0 6px 18px rgba(34,32,28,.10);
+  }
+  #flowerVideo{
+    display:block;
+    width:auto;height:min(88vh,1000px);min-height:min(88vw,520px);
+    max-width:94vw;
+    margin:0 auto;
+    object-fit:contain;background:transparent;
+  }
+  @media(max-aspect-ratio:1/1){#flowerVideo{height:min(94vw,1000px)}}
+
+  /* 开度细线 */
+  .bloom-line{
+    position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+    width:min(340px,70%);height:2px;background:rgba(255,255,255,.28);
+    pointer-events:none;opacity:0;transition:opacity .6s;
+  }
+  .bloom-line i{display:block;height:100%;width:0%;background:#fff;transition:width .12s linear}
+  .stage.live .bloom-line{opacity:1}
+  .bloom-word{
+    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+    font-family:"Playfair Display",serif;font-size:10.5px;letter-spacing:.44em;color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,.5);pointer-events:none;
+    opacity:0;transition:opacity .6s;white-space:nowrap;
+  }
+  .stage.live .bloom-word{opacity:.92}
+
+  /* 摄像头小窗 */
+  .cam{
+    position:absolute;right:14px;bottom:14px;width:172px;aspect-ratio:4/3;
+    border:1px solid rgba(255,255,255,.75);border-radius:4px;overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);background:#161614;
+    transform:scale(0);opacity:0;transition:transform .4s cubic-bezier(.2,.9,.3,1.25),opacity .35s;
+  }
+  .cam.on{transform:scale(1);opacity:1}
+  .cam video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+  .cam canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
+
+  /* 手势开启遮罩 */
+  .gate{
+    position:absolute;inset:0;z-index:5;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+    background:linear-gradient(180deg,rgba(250,248,242,.55),rgba(245,243,237,.88));
+    backdrop-filter:blur(5px);text-align:center;padding:28px;
+  }
+  .gate .g-kicker{
+    font-size:10.5px;letter-spacing:.5em;color:var(--sub);text-transform:uppercase;
+  }
+  .gate h2{
+    font-family:"Playfair Display","Noto Serif SC",serif;
+    font-size:clamp(24px,3.4vw,38px);color:var(--ink);font-weight:500;letter-spacing:.06em;
+  }
+  .gate p{color:#5c574d;font-size:13.5px;line-height:2.05;letter-spacing:.08em}
+  .gate p b{color:var(--ink);font-weight:500}
+  .gate .go{
+    margin-top:2px;border:1px solid rgba(255,255,255,.85);cursor:pointer;background:none;
+    padding:13px 52px;color:var(--ink);font-size:13px;letter-spacing:.5em;text-indent:.5em;background:#fff;
+    font-family:inherit;border-radius:2px;
+    transition:background .25s,color .25s,transform .2s;
+  }
+  .gate .go:hover{background:var(--ink);color:#fff;transform:translateY(-1px)}
+  .gate.hide{opacity:0;pointer-events:none;transition:opacity .5s}
+
+  .status{
+    position:absolute;left:50%;top:18px;transform:translateX(-50%);
+    padding:8px 22px;font-size:12px;letter-spacing:.14em;color:#fff;
+    background:rgba(20,24,20,.72);border-radius:2px;
+    opacity:0;pointer-events:none;transition:opacity .4s;white-space:nowrap;
+  }
+  .status.show{opacity:1}
+  .status.err{background:rgba(158,52,52,.88)}
+
+  /* 底部控制条（杂志脚注式） */
+  .controls{
+    margin-top:12px;display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+  }
+  .controls .hint{font-size:12.5px;color:var(--sub);letter-spacing:.12em}
+  .controls .hint b{color:var(--ink);font-weight:500}
+  .controls .keys{margin-left:auto;font-size:11.5px;color:var(--faint);letter-spacing:.1em}
+  .controls .keys kbd{
+    font-family:inherit;border:1px solid var(--line);border-radius:3px;
+    padding:2px 7px;font-size:10.5px;color:var(--sub);background:#fbfaf6;
+  }
+
+  /* ============ 右：花语信息栏 ============ */
+  .info-col{
+    position:absolute;right:clamp(14px,2vw,30px);top:50%;transform:translateY(-50%);
+    width:min(320px,86vw);
+    background:rgba(245,243,237,.90);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(220,215,202,.8);
+    border-radius:6px;
+    padding:clamp(18px,2.6vh,30px) clamp(18px,2vw,28px);
+    display:flex;flex-direction:column;
+    box-shadow:0 24px 60px -20px rgba(20,18,15,.45);
+    z-index:4;
+    max-height:82%;overflow:auto;
+  }
+  @media(max-width:760px){
+    .info-col{position:static;transform:none;width:auto;max-height:none;margin-top:14px;box-shadow:none;background:transparent;border:none;backdrop-filter:none;padding:6px 2px}
+  }
+  .info-no{
+    font-family:"Playfair Display",serif;
+    font-size:clamp(44px,5vw,64px);font-weight:500;line-height:1;color:var(--ink);
+  }
+  .info-no small{font-size:.42em;color:var(--faint);letter-spacing:.1em}
+  .info-name{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:.3em;margin-top:14px}
+  .info-latin{
+    font-family:"Playfair Display",serif;font-style:italic;
+    color:var(--sub);font-size:14px;letter-spacing:.06em;margin-top:7px;
+  }
+  .info-sec{margin-top:clamp(18px,3.4vh,34px)}
+  .info-sec h4{
+    font-size:10px;letter-spacing:.46em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:10px;font-weight:500;
+  }
+  .info-sec p{font-size:14px;line-height:1.95;letter-spacing:.05em;color:#4a463e}
+  .info-sec .fl{font-size:17px;letter-spacing:.34em;color:var(--pink-deep)}
+  .info-dots{
+    margin-top:auto;padding-top:22px;
+    display:grid;grid-template-columns:repeat(8,1fr);gap:7px;
+  }
+  .info-dots .dot{
+    aspect-ratio:1;border-radius:50%;cursor:pointer;overflow:hidden;
+    border:1px solid var(--line);transition:transform .18s,border-color .18s;position:relative;
+  }
+  .info-dots .dot img{width:100%;height:100%;object-fit:cover;display:block}
+  .info-dots .dot:hover{transform:scale(1.1)}
+  .info-dots .dot.on{border-color:var(--pink-deep);transform:scale(1.12)}
+  .info-dots .dot .dno{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-size:9px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.65);font-family:"Playfair Display",serif;
+  }
+
+  /* ============ 花墙（下半页） ============ */
+  .gallery{
+    max-width:1500px;margin:clamp(30px,5vh,56px) auto clamp(26px,4vh,44px);
+    padding:0 clamp(18px,3vw,44px);
+  }
+  .g-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-top:1px solid var(--line);padding-top:18px;margin-bottom:18px;
+  }
+  .g-head h3{font-size:13px;letter-spacing:.4em;font-weight:700}
+  .g-head span{font-size:11px;color:var(--faint);letter-spacing:.2em}
+  .g-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.4vw,20px)}
+  .gcard{
+    position:relative;aspect-ratio:4/3;overflow:hidden;cursor:pointer;
+    border-radius:4px;border:1px solid var(--line);background:var(--paper2);
+    transition:transform .22s,box-shadow .22s,border-color .22s;
+  }
+  .gcard img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.94);transition:filter .3s,transform .55s}
+  .gcard:hover{transform:translateY(-4px);box-shadow:0 16px 34px -14px rgba(34,32,28,.35);border-color:var(--faint)}
+  .gcard:hover img{filter:saturate(1.06);transform:scale(1.05)}
+  .gcard .meta{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:26px 12px 10px;
+    background:linear-gradient(transparent,rgba(20,18,15,.62));
+    display:flex;justify-content:space-between;align-items:flex-end;
+  }
+  .gcard .meta .cn{color:#fff;font-size:13.5px;letter-spacing:.3em}
+  .gcard .meta .en{
+    font-family:"Playfair Display",serif;font-style:italic;color:rgba(255,255,255,.75);font-size:10.5px;
+  }
+  .gcard.on{border-color:var(--pink-deep);box-shadow:0 0 0 1px var(--pink-deep)}
+
+  /* 手势滑条兜底 */
+  .slide-bar{
+    display:flex;align-items:center;gap:14px;
+    margin-top:12px;padding:10px 4px 2px;
+    opacity:.96;
+  }
+  .slide-bar .sb-cap{font-size:11px;letter-spacing:.3em;color:var(--faint)}
+  .slide-bar input[type=range]{
+    flex:1;-webkit-appearance:none;appearance:none;
+    height:2px;background:var(--line);border-radius:99px;outline:none;
+  }
+  .slide-bar input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;
+    width:18px;height:18px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--pink-deep);
+    box-shadow:0 2px 8px rgba(34,32,28,.18);cursor:pointer;
+  }
+  .slide-bar input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--pink-deep);cursor:pointer;
+  }
+  footer{
+    border-top:1px solid var(--line);
+    text-align:center;padding:20px 16px 30px;
+    font-size:10.5px;letter-spacing:.34em;color:var(--faint);text-transform:uppercase;
+  }
+  footer b{color:var(--sub);font-weight:500}
+
+  /* 响应式 */
+  @media(max-width:960px){
+    .spread{grid-template-columns:1fr}
+    .info-col{border-left:none;border-top:1px solid var(--line);padding:18px 0 0}
+    .info-dots{margin-top:20px}
+    .g-grid{grid-template-columns:repeat(2,1fr)}
+    .studies .st .nm{font-size:11px}
+  }
+</style>
+</head>
+<body>
+
+<!-- 刊头 -->
+<div class="masthead">
+  <div class="brand">
+    <div class="flora">FLORA</div>
+    <div class="tag">Form in Motion · 指尖花开</div>
+  </div>
+  <div class="studies" id="studies">
+    <div class="st" data-i="0"><span class="no">01</span><span class="nm">PEONY·白樱</span></div>
+    <div class="st" data-i="1"><span class="no">02</span><span class="nm">IRIS·牡丹</span></div>
+    <div class="st" data-i="2"><span class="no">03</span><span class="nm">CAMELLIA</span></div>
+    <div class="st" data-i="3"><span class="no">04</span><span class="nm">DAISY</span></div>
+    <div class="st" data-i="4"><span class="no">05</span><span class="nm">LILY</span></div>
+    <div class="st" data-i="5"><span class="no">06</span><span class="nm">ROSE</span></div>
+    <div class="st" data-i="6"><span class="no">07</span><span class="nm">POPPY</span></div>
+    <div class="st" data-i="7"><span class="no">08</span><span class="nm">MAGNOLIA</span></div>
+  </div>
+</div>
+
+<!-- 主区 -->
+<div class="spread">
+  <div class="stage-col">
+    <div class="kicker">Bloom · 让手势，唤醒一朵花</div>
+    <div class="stage" id="stage">
+      <video id="flowerVideo" playsinline muted preload="auto" loop></video>
+      <div class="bloom-line"><i id="meterFill"></i></div>
+      <div class="bloom-word" id="bloomLabel">BUD · 花苞</div>
+      <div class="cam" id="camBox"><video id="camVideo" playsinline muted></video><canvas id="camCanvas"></canvas></div>
+      <div class="status" id="status"></div>
+      <aside class="info-col">
+        <div class="info-no" id="infoNo">02<small> / 08</small></div>
+        <div class="info-name" id="infoName">牡丹</div>
+        <div class="info-latin" id="infoLatin">Peony · Paeonia lactiflora</div>
+        <div class="info-sec">
+          <h4>Flower Language · 花语</h4>
+          <p class="fl" id="infoFl">富贵 · 圆满</p>
+        </div>
+        <div class="info-sec">
+          <h4>Study · 手记</h4>
+          <p id="infoDesc">花瓣层层叠叠地打开，像被指尖一点点唤醒。手势的开合之间，藏着花开的呼吸感。</p>
+        </div>
+        <div class="info-dots" id="dots"></div>
+      </aside>
+      <div class="gate" id="gate">
+        <div class="g-kicker">Gesture · Bloom Study</div>
+        <h2>把手伸到镜头前</h2>
+        <p>拇指与食指，就是花瓣的呼吸 ——<br>
+           <b>分开</b>，花慢慢盛放 · <b>捏紧</b>，合回花苞 · 半开半合随手停留<br>
+           画面仅在本地识别，不上传。</p>
+        <button class="go" id="goBtn">开 始</button>
+      </div>
+    </div>
+    <div class="controls">
+      <span class="hint"><b>捏合手指</b>，控制花朵开合</span>
+      <span class="keys">无摄像头也可用 <kbd>←</kbd> 合拢 <kbd>→</kbd> 盛放</span>
+    </div>
+    <div class="slide-bar" id="slideBar">
+      <span class="sb-cap">花苞</span>
+      <input type="range" id="sbRange" min="0" max="1000" value="0">
+      <span class="sb-cap">盛放</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- 花墙 -->
+<div class="gallery">
+  <div class="g-head">
+    <h3>八花研究 · STUDIES</h3>
+    <span>点击任意一格更换主角</span>
+  </div>
+  <div class="g-grid" id="gallery"></div>
+</div>
+
+<footer><b>FLORA</b> · Form in Motion — MediaPipe Hands 本地识别 · 逐帧插值缓冲</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.min.js"></script>
+<script>
+/* ================= 数据 ================= */
+var FLOWERS=[
+  {id:'01-white-bloom',cn:'白樱',en:'White Cherry',latin:'Prunus × yedoensis',fl:'纯洁 · 淡然',desc:'白色花瓣在浅景深里舒展，开合最是轻盈。'},
+  {id:'02-bloom',cn:'牡丹',en:'Peony',latin:'Paeonia lactiflora',fl:'富贵 · 圆满',desc:'花瓣层层叠叠地打开，像被指尖一点点唤醒。'},
+  {id:'03-bloom',cn:'山茶',en:'Camellia',latin:'Camellia japonica',fl:'谦逊 · 含蓄',desc:'山茶开得慢半拍，恰好展示「慢慢打开」的克制。'},
+  {id:'04-bloom',cn:'黄葵',en:'Sun Daisy',latin:'Bellis perennis',fl:'明亮 · 向光',desc:'黄色花心最先亮起，像小太阳被捧在手心。'},
+  {id:'05-bloom',cn:'百合',en:'Lily',latin:'Lilium spp.',fl:'纯粹 · 声张',desc:'花冠向外翻卷盛放，是八朵里最有仪式感的一朵。'},
+  {id:'06-bloom',cn:'芍药',en:'Rose Mallow',latin:'Paeonia × suffruticosa',fl:'深情 · 惜别',desc:'粉色晕染由浅入深，半开时最好看。'},
+  {id:'07-bloom',cn:'罂粟',en:'Poppy',latin:'Papaver orientale',fl:'热烈 · 短暂',desc:'红得毫无保留，开合之间皆是戏剧。'},
+  {id:'08-white-bloom',cn:'木兰',en:'Magnolia',latin:'Magnolia denudata',fl:'高洁 · 先觉',desc:'先于叶开放的花，白色大瓣一开便知春。'}
+];
+var cur=1;
+
+/* ================= 引用 ================= */
+var stage=document.getElementById('stage');
+var fv=document.getElementById('flowerVideo');
+var camV=document.getElementById('camVideo');
+var camC=document.getElementById('camCanvas');
+var ctx=camC.getContext('2d');
+var meter=document.getElementById('meterFill');
+var bloomLabel=document.getElementById('bloomLabel');
+var statusEl=document.getElementById('status');
+var gate=document.getElementById('gate');
+var goBtn=document.getElementById('goBtn');
+var camBox=document.getElementById('camBox');
+
+/* ================= 视频核心 ================= */
+var target=0,current=0;
+function pad2(n){return (n<10?'0':'')+n}
+
+function renderInfo(){
+  var f=FLOWERS[cur];
+  document.getElementById('infoNo').innerHTML=pad2(cur+1)+'<small> / 08</small>';
+  document.getElementById('infoName').textContent=f.cn;
+  document.getElementById('infoLatin').textContent=f.latin+' · '+f.en;
+  document.getElementById('infoFl').textContent=f.fl;
+  document.getElementById('infoDesc').textContent=f.desc;
+  document.querySelectorAll('.studies .st').forEach(function(el,i){
+    el.classList.toggle('cur',i===cur);
+  });
+  document.querySelectorAll('.info-dots .dot').forEach(function(el,i){
+    el.classList.toggle('on',i===cur);
+  });
+  document.querySelectorAll('.gcard').forEach(function(el,i){
+    el.classList.toggle('on',i===cur);
+  });
+}
+
+function loadFlower(i){
+  cur=(i+FLOWERS.length)%FLOWERS.length;
+  var f=FLOWERS[cur];
+  fv.src='videos/web_flower-'+f.id+'.mp4';
+  fv.load();
+  fv.addEventListener('loadedmetadata',function once(){
+    try{fv.currentTime=fv.duration*0.02;}catch(e){}
+    unlockVideo();   /* 解码解锁：确保手机上改时间轴能看到画面 */
+    fv.removeEventListener('loadedmetadata',once);
+  });
+  /* 已有元数据时（换花）也解锁 */
+  if(fv.readyState>=1)unlockVideo();
+  renderInfo();
+}
+
+/* ---- 视频推进核心：解锁 + 守卫 seek（手机兼容） ---- */
+var vSeeking=false,vUnlockTries=0;
+fv.addEventListener('seeked',function(){vSeeking=false;});
+fv.addEventListener('error',function(){ if(vSeeking){vSeeking=false;} });
+setInterval(function(){vSeeking=false;},120);  /* 保险：120ms 强制复位，防 seeked 不触发 */
+
+function unlockVideo(){
+  /* 手机浏览器必须 play 过一次，后续改 currentTime 才会渲染画面 */
+  var pr=fv.play();
+  if(pr&&pr.then){
+    pr.then(function(){fv.pause();}).catch(function(){
+      /* 极少数情况再试一次 */
+      if(vUnlockTries<3){vUnlockTries++;setTimeout(unlockVideo,600);}
+    });
+  }
+}
+
+function guardedSeek(t){
+  if(!isFinite(t)||t<0)return;
+  if(vSeeking)return;
+  if(Math.abs(t-fv.currentTime)<=0.012)return;
+  vSeeking=true;
+  try{fv.currentTime=t;}catch(e){vSeeking=false;}
+}
+
+function applyOpenness(t){
+  if(!fv.duration)return;
+  var tt=0.04+t*(0.97-0.04);
+  var want=fv.duration*tt;
+  guardedSeek(want);
+  meter.style.width=(t*100).toFixed(1)+'%';
+  var L=t<0.08?'BUD · 花苞':t<0.35?'OPENING · 初绽':t<0.7?'HALF · 半开':t<0.92?'ALMOST · 将满':'FULL BLOOM · 盛放';
+  if(bloomLabel.textContent!==L)bloomLabel.textContent=L;
+}
+
+var SMOOTH=0.16,MAXSTEP=0.020;
+function tick(){
+  var d=target-current;
+  if(Math.abs(d)>0.0004){
+    var step=d*SMOOTH;
+    if(Math.abs(step)>MAXSTEP)step=Math.sign(step)*MAXSTEP;
+    current+=step;
+    applyOpenness(current);
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ================= 手势 ================= */
+var hands=null,camUtil=null;
+function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy)}
+function showStatus(txt,err){
+  statusEl.textContent=txt;
+  statusEl.classList.toggle('err',!!err);
+  statusEl.classList.add('show');
+}
+function hideStatus(){statusEl.classList.remove('show')}
+
+var lastHandTs=0,everSawHand=false;
+function onResults(res){
+  var w=camC.width=camV.videoWidth||320,h=camC.height=camV.videoHeight||240;
+  ctx.clearRect(0,0,w,h);
+  if(res.multiHandLandmarks&&res.multiHandLandmarks.length>0){
+    lastHandTs=Date.now();
+    if(!everSawHand){everSawHand=true;hideStatus();}
+    var lm=res.multiHandLandmarks[0];
+    ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=2;
+    [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]].forEach(function(p){
+      ctx.beginPath();ctx.moveTo(lm[p[0]].x*w,lm[p[0]].y*h);ctx.lineTo(lm[p[1]].x*w,lm[p[1]].y*h);ctx.stroke();
+    });
+    ctx.fillStyle='#e8c98f';
+    [4,8].forEach(function(i){ctx.beginPath();ctx.arc(lm[i].x*w,lm[i].y*h,5,0,7);ctx.fill()});
+    var palm=dist(lm[0],lm[9])||0.16;
+    var pinch=dist(lm[4],lm[8])/palm;
+    var open=(pinch-0.32)/(2.05-0.32);
+    target=Math.max(0,Math.min(1,open));
+  }
+}
+
+function start(){
+  gate.classList.add('hide');
+  unlockVideo();   /* 用户手势内解锁视频（手机最稳） */
+  showStatus('正在启动摄像头…');
+  if(!hands){
+    hands=new Hands({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/'+f}});
+    var isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    hands.setOptions({
+      maxNumHands:1,
+      modelComplexity:isMobile?0:1,          // 手机用轻量模型（快2-3倍）
+      minDetectionConfidence:isMobile?0.5:0.6,
+      minTrackingConfidence:isMobile?0.5:0.55,
+      selfieMode:true                         // 移动端自拍视角更自然
+    });
+    hands.onResults(onResults);
+  }
+  camUtil=new Camera(camV,{
+    onFrame:async function(){if(hands)await hands.send({image:camV});},
+    width:640,height:480
+  });
+  camUtil.start().then(function(){
+    camBox.classList.add('on');
+    stage.classList.add('live');
+    hideStatus();
+  }).catch(function(e){
+    showStatus('摄像头无法启动：'+(e&&e.message?e.message:'请检查权限')+' —— 可用 ← → 键盘体验',true);
+    stage.classList.add('live');
+  });
+  setTimeout(function(){
+    if(statusEl.classList.contains('show')&&!statusEl.classList.contains('err'))showStatus('模型加载中（首次约 5–10 秒）…');
+  },3500);
+  /* 看护：每秒检查一次识别状态 */
+  var guard=setInterval(function(){
+    if(!everSawHand){
+      if(Date.now()-startTs<10000){
+        showStatus('正在寻找手 · 请把手掌正对摄像头，光线充足');
+      }else{
+        showStatus('还没看到手 · 换个角度或靠近一点；也可用下方滑条控制',false);
+        var sb=document.getElementById('slideBar');if(sb)sb.classList.add('show');
+        clearInterval(guard);
+      }
+    }else if(Date.now()-lastHandTs>2500){
+      /* 曾经见过手，现在丢了：保持花状态，轻提示 */
+      showStatus('手移出画面 · 花停在当前状态');
+      var lost=setInterval(function(){
+        if(Date.now()-lastHandTs<800){hideStatus();clearInterval(lost);}
+        if(Date.now()-lastHandTs>15000){clearInterval(lost);}
+      },600);
+    }else{
+      hideStatus();
+    }
+  },1000);
+  var startTs=Date.now();
+}
+
+function keyboardFallback(){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight')target=Math.min(1,target+0.08);
+    if(e.key==='ArrowLeft')target=Math.max(0,target-0.08);
+  });
+}
+goBtn.addEventListener('click',start);
+
+/* ================= 顶栏花选 ================= */
+document.querySelectorAll('.studies .st').forEach(function(el){
+  el.addEventListener('click',function(){loadFlower(+el.dataset.i)});
+});
+
+/* ================= 圆点 ================= */
+var dots=document.getElementById('dots');
+FLOWERS.forEach(function(f,i){
+  var d=document.createElement('div');
+  d.className='dot'+(i===cur?' on':'');
+  d.innerHTML='<img src="videos/thumb_'+f.id+'.jpg" alt="'+f.cn+'"><span class="dno">'+pad2(i+1)+'</span>';
+  d.addEventListener('click',function(){loadFlower(i)});
+  dots.appendChild(d);
+});
+
+/* ================= 花墙 ================= */
+var gal=document.getElementById('gallery');
+FLOWERS.forEach(function(f,i){
+  var d=document.createElement('div');
+  d.className='gcard'+(i===cur?' on':'');
+  d.innerHTML='<img src="videos/thumb_'+f.id+'.jpg" alt="'+f.cn+'" loading="lazy"><div class="meta"><span class="cn">'+f.cn+'</span><span class="en">'+f.en+'</span></div>';
+  d.addEventListener('click',function(){loadFlower(i)});
+  gal.appendChild(d);
+});
+
+/* ================= 触屏滑条 ================= */
+var sbRange=document.getElementById('sbRange');
+sbRange.addEventListener('input',function(){
+  target=sbRange.value/1000;
+});
+/* 手动更新滑条位置（当手势/键盘控制时同步显示） */
+setInterval(function(){
+  if(document.activeElement!==sbRange)sbRange.value=Math.round(current*1000);
+},200);
+
+keyboardFallback();
+loadFlower(cur);
+</script>
+</body>
+</html>
